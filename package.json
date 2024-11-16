@@ -1,5 +1,5 @@
 {
-  "name": "@tauri-apps/plugin-push-notifications",
+  "name": "tauri-plugin-push-notifications",
   "version": "0.1.0",
   "author": "You",
   "description": "",
