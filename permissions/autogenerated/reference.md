@@ -2,7 +2,7 @@
 
 Default permissions for the plugin
 
-- `allow-get-push-token`
+- `allow-push-token`
 
 ## Permission Table
 
@@ -16,12 +16,12 @@ Default permissions for the plugin
 <tr>
 <td>
 
-`push-notifications:allow-ping`
+`push-notifications:allow-push-token`
 
 </td>
 <td>
 
-Enables the ping command without any pre-configured scope.
+Enables the push_token command without any pre-configured scope.
 
 </td>
 </tr>
@@ -29,12 +29,12 @@ Enables the ping command without any pre-configured scope.
 <tr>
 <td>
 
-`push-notifications:deny-ping`
+`push-notifications:deny-push-token`
 
 </td>
 <td>
 
-Denies the ping command without any pre-configured scope.
+Denies the push_token command without any pre-configured scope.
 
 </td>
 </tr>
