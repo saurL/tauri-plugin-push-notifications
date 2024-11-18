@@ -1,11 +1,13 @@
 use base64::{engine::general_purpose, Engine as _};
 use serde::de::DeserializeOwned;
+use std::sync::Mutex;
 use tauri::{
     plugin::{PluginApi, PluginHandle},
-    AppHandle, Runtime,
+    AppHandle, Runtime, State,
 };
 
 use crate::models::*;
+use crate::PushTokenState;
 
 #[cfg(target_os = "ios")]
 tauri::ios_plugin_binding!(init_plugin_push_notifications);
