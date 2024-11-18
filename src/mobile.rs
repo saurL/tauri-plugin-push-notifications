@@ -18,7 +18,7 @@ pub fn init<R: Runtime, C: DeserializeOwned>(
     api: PluginApi<R, C>,
 ) -> crate::Result<PushNotifications<R>> {
     #[cfg(target_os = "android")]
-    let handle = api.register_android_plugin("", "PushNotificationsPlugin")?;
+    let handle = api.register_android_plugin("app.tauri.pushNotifications", "PushNotificationsPlugin")?;
     #[cfg(target_os = "ios")]
     let handle = api.register_ios_plugin(init_plugin_push_notifications)?;
     Ok(PushNotifications(handle))
