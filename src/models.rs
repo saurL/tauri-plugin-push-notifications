@@ -11,3 +11,15 @@ pub struct PushTokenRequest {
 pub struct PushTokenResponse {
     pub value: Option<String>,
 }
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PushPermissionRequest {
+    // Nothing at this time.
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PushPermissionResponse {
+    pub granted: Option<bool>,
+}

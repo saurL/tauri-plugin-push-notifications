@@ -1,4 +1,4 @@
-const COMMANDS: &[&str] = &["push_token"];
+const COMMANDS: &[&str] = &["push_token", "request_push_permission"];
 
 fn main() {
     tauri_plugin::Builder::new(COMMANDS)

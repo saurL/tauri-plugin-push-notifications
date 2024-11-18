@@ -305,6 +305,16 @@
           "const": "deny-push-token"
         },
         {
+          "description": "Enables the request_push_permission command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-request-push-permission"
+        },
+        {
+          "description": "Denies the request_push_permission command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-request-push-permission"
+        },
+        {
           "description": "Default permissions for the plugin",
           "type": "string",
           "const": "default"

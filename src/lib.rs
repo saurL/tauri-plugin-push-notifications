@@ -46,7 +46,10 @@ impl<R: Runtime, T: Manager<R>> PushNotificationsExt<R> for T {
 /// Initializes the plugin.
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("push-notifications")
-        .invoke_handler(tauri::generate_handler![commands::push_token])
+        .invoke_handler(tauri::generate_handler![
+            commands::push_token,
+            commands::request_push_permission
+        ])
         .setup(|app, api| {
             // setup push token storage
             app.manage(PushTokenStore(Default::default()));
