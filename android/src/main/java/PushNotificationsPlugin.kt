@@ -23,16 +23,16 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
     private val messagingPermissionGranted = AtomicBoolean(false)
 
     // Launcher for messaging permission requests.
-    private val requestPermissionLauncher = activity.registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        messagingPermissionGranted.set(isGranted)
-    }
+    // private val requestPermissionLauncher = activity.registerForActivityResult(
+    //     ActivityResultContracts.RequestPermission(),
+    // ) { isGranted: Boolean ->
+    //     messagingPermissionGranted.set(isGranted)
+    // }
 
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
             ) {
                 // FCM SDK (and your app) can post notifications.
@@ -43,7 +43,7 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
                 //       If the user selects "No thanks," allow the user to continue without notifications.
             } else {
                 // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                //requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
     }

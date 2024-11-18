@@ -3,6 +3,20 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+buildscript {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.google.gms:google-services:4.4.2")
+    }
+}
+
+apply(plugin = "com.google.gms.google-services")
+
 android {
     namespace = "app.tauri.pushNotifications"
     compileSdk = 34
@@ -33,6 +47,8 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-messaging")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.0")
     implementation("com.google.android.material:material:1.7.0")

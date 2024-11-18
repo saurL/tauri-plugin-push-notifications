@@ -29,6 +29,16 @@ pub fn init<R: Runtime, C: DeserializeOwned>(
 pub struct PushNotifications<R: Runtime>(PluginHandle<R>);
 
 impl<R: Runtime> PushNotifications<R> {
+    /// Requests permission to access push services.
+    pub fn request_push_permission(
+        &self,
+        _state: State<Mutex<PushTokenState>>,
+        _payload: PushPermissionRequest,
+    ) -> crate::Result<PushPermissionResponse> {
+        // implemented by underlying native plugins
+        Ok(PushPermissionResponse { granted: None })
+    }
+
     pub fn get_push_token(
         &self,
         state: State<Mutex<PushTokenState>>,
