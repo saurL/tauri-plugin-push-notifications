@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "app.tauri.push-notifications"
+    namespace = "app.tauri.pushNotifications"
     compileSdk = 34
 
     defaultConfig {
