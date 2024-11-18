@@ -1,3 +1,4 @@
+use base64::{engine::general_purpose, Engine as _};
 use serde::de::DeserializeOwned;
 use tauri::{
     plugin::{PluginApi, PluginHandle},
@@ -15,7 +16,7 @@ pub fn init<R: Runtime, C: DeserializeOwned>(
     api: PluginApi<R, C>,
 ) -> crate::Result<PushNotifications<R>> {
     #[cfg(target_os = "android")]
-    let handle = api.register_android_plugin("", "ExamplePlugin")?;
+    let handle = api.register_android_plugin("", "PushNotificationsPlugin")?;
     #[cfg(target_os = "ios")]
     let handle = api.register_ios_plugin(init_plugin_push_notifications)?;
     Ok(PushNotifications(handle))
@@ -25,9 +26,20 @@ pub fn init<R: Runtime, C: DeserializeOwned>(
 pub struct PushNotifications<R: Runtime>(PluginHandle<R>);
 
 impl<R: Runtime> PushNotifications<R> {
-    pub fn get_push_token(&self, payload: PushTokenRequest) -> crate::Result<PushTokenResponse> {
-        Ok(PushTokenResponse {
-            value: Some("testing-not-real".as_bytes().to_vec()),
-        })
+    pub fn get_push_token(
+        &self,
+        state: State<Mutex<PushTokenState>>,
+        _payload: PushTokenRequest,
+    ) -> crate::Result<PushTokenResponse> {
+        let state = state.lock().unwrap();
+        match &state.token {
+            Some(token) => {
+                let encoded = general_purpose::STANDARD.encode(&token);
+                Ok(PushTokenResponse {
+                    value: Some(encoded.clone()),
+                })
+            }
+            None => Ok(PushTokenResponse { value: None }),
+        }
     }
 }
