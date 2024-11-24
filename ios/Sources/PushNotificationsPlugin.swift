@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
 
-package app.tauri.pushNotifications;
+import Tauri
+import UIKit
+import WebKit
 
 class PushNotificationsPlugin: Plugin {
     public override func load(webview: WKWebView) {}
