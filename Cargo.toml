@@ -18,7 +18,8 @@ base64 = "^0"
 [build-dependencies]
 tauri-plugin = { version = "^2", features = ["build"] }
 
+
 [patch.crates-io]
-tauri = { path = "/workspace/tauri/crates/tauri" }
-tauri-plugin = { path = "/workspace/tauri/crates/tauri-plugin" }
-tao = { path = "/workspace/tao" }
+tauri =  { git = "https://github.com/saurL/tauri", branch = "feat/push-notifications" }
+tauri-plugin =  { git = "https://github.com/saurL/tauri", branch = "feat/push-notifications" }
+tao = { git = "https://github.com/saurL/tao", branch = "feat/push-notification" }

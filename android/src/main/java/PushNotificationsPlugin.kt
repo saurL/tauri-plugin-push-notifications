@@ -17,36 +17,14 @@ import app.tauri.plugin.Invoke
 import app.tauri.plugin.Plugin
 import java.util.concurrent.atomic.AtomicBoolean
 
-@TauriPlugin
+@TauriPlugin(
+  permissions = [
+    Permission(strings = [Manifest.permission.POST_NOTIFICATIONS], alias = "notification")
+  ]
+)
 class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity) {
     // Whether permissions have been granted for messaging.
     private val messagingPermissionGranted = AtomicBoolean(false)
-
-    // Launcher for messaging permission requests.
-    // private val requestPermissionLauncher = activity.registerForActivityResult(
-    //     ActivityResultContracts.RequestPermission(),
-    // ) { isGranted: Boolean ->
-    //     messagingPermissionGranted.set(isGranted)
-    // }
-
-    private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (activity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
-                // Directly ask for the permission
-                //requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
 
     override fun load(webView: WebView) {
         // nothing to do yet
@@ -61,9 +39,13 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
 
     @Command
     fun push_token(invoke: Invoke) {
+        val ret = JSObject()
+
         AppMessagingService.obtain().pushToken().let { tokenOrNull ->
             // if the token is `null`, pass `null`, otherwise encode it (if needed)
             // and pass it back to the caller as a string.
+            ret.put("value", tokenOrNull)
+            invoke.resolve(ret)          
         }
     }
 }

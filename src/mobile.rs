@@ -35,8 +35,15 @@ impl<R: Runtime> PushNotifications<R> {
         _state: State<Mutex<PushTokenState>>,
         _payload: PushPermissionRequest,
     ) -> crate::Result<PushPermissionResponse> {
-        // implemented by underlying native plugins
-        Ok(PushPermissionResponse { granted: None })
+        match self.check_permissions()? {
+            PermissionState::Granted => Ok(PushPermissionResponse { granted: true }),
+            PermissionState::Denied => Ok(PushPermissionResponse { granted: false }),
+            PermissionState::Prompt => match self.request_notification_permission()? {
+                PermissionState::Granted => Ok(PushPermissionResponse { granted: true }),
+                PermissionState::Denied => Ok(PushPermissionResponse { granted: false }),
+                PermissionState::Prompt => Ok(PushPermissionResponse { granted: false }),
+            },
+        }
     }
 
     pub fn get_push_token(
@@ -44,15 +51,24 @@ impl<R: Runtime> PushNotifications<R> {
         state: State<Mutex<PushTokenState>>,
         _payload: PushTokenRequest,
     ) -> crate::Result<PushTokenResponse> {
-        let state = state.lock().unwrap();
-        match &state.token {
-            Some(token) => {
-                let encoded = general_purpose::STANDARD.encode(&token);
-                Ok(PushTokenResponse {
-                    value: Some(encoded.clone()),
-                })
-            }
-            None => Ok(PushTokenResponse { value: None }),
-        }
+        self.0
+            .run_mobile_plugin("push_token", _payload)
+            .map_err(Into::into)
+    }
+
+    pub fn request_notification_permission(&self) -> crate::Result<PermissionState> {
+        self.0
+            .run_mobile_plugin::<PermissionResponse>(
+                "requestPermissions",
+                RequestPermission { notification: true },
+            )
+            .map(|r| r.notification)
+            .map_err(Into::into)
+    }
+
+    pub fn check_permissions(&self) -> crate::Result<PermissionResponse> {
+        self.0
+            .run_mobile_plugin::<PermissionResponse>("checkPermissions", ())
+            .map_err(Into::into)
     }
 }
