@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use tauri::{
     plugin::{Builder, TauriPlugin},
     Manager, RunEvent, Runtime,
@@ -33,31 +34,28 @@ pub struct PushTokenState {
 struct PushTokenStore(Mutex<HashMap<String, String>>);
 
 /// Extensions to [`tauri::App`], [`tauri::AppHandle`] and [`tauri::Window`] to access the push-notifications APIs.
-pub trait PushNotificationsExt<R: Runtime> {
-    fn push_notifications(&self) -> &PushNotifications<R>;
+pub trait PushNotificationsExt<R: Runtime, T: NotificationData> {
+    fn push_notifications(&self) -> &PushNotifications<R, T>;
 }
 
-impl<R: Runtime, T: Manager<R>> PushNotificationsExt<R> for T {
-    fn push_notifications(&self) -> &PushNotifications<R> {
-        self.state::<PushNotifications<R>>().inner()
+impl<R: Runtime, M: Manager<R>, T: NotificationData> PushNotificationsExt<R, T> for M {
+    fn push_notifications(&self) -> &PushNotifications<R, T> {
+        self.state::<PushNotifications<R, T>>().inner()
     }
 }
 
 /// Initializes the plugin.
-pub fn init<R: Runtime>() -> TauriPlugin<R> {
+pub fn init<R: Runtime, T: NotificationData>() -> TauriPlugin<R> {
     Builder::new("push-notifications")
-        .invoke_handler(tauri::generate_handler![
-            commands::push_token,
-            commands::request_push_permission
-        ])
+        .invoke_handler(tauri::generate_handler![commands::request_push_permission])
         .setup(|app, api| {
             // setup push token storage
             app.manage(PushTokenStore(Default::default()));
             app.manage(Mutex::new(PushTokenState::default()));
             #[cfg(mobile)]
-            let push_notifications = mobile::init(app, api)?;
+            let push_notifications = mobile::init::<R, _, T>(app, api)?;
             #[cfg(desktop)]
-            let push_notifications = desktop::init(app, api)?;
+            let push_notifications = desktop::init::<R, _, T>(app, api)?;
             app.manage(push_notifications);
             Ok(())
         })
