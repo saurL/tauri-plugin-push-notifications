@@ -24,9 +24,7 @@ impl<R: Runtime> PushNotifications<R> {
         _payload: PushPermissionRequest,
     ) -> crate::Result<PushPermissionResponse> {
         // desktop platforms don't use this hook
-        Ok(PushPermissionResponse {
-            granted: Some(true),
-        })
+        Ok(PushPermissionResponse { granted: true })
     }
 
     /// Obtains the most recent push token.
