@@ -1,6 +1,7 @@
 use base64::{engine::general_purpose, Engine as _};
 use serde::de::DeserializeOwned;
 use std::sync::Mutex;
+use tauri::Listener;
 use tauri::{plugin::PluginApi, AppHandle, Runtime, State};
 
 use crate::models::*;
@@ -44,5 +45,24 @@ impl<R: Runtime> PushNotifications<R> {
             }
             None => Ok(PushTokenResponse { value: None }),
         }
+    }
+    pub fn on_notification_clicked<F: Fn(T) + Send + 'static, T: NotificationDataTrait>(
+        &self,
+        f: F,
+    ) {
+        let _ = self
+            .0
+            .listen("push-notification://notification-clicked", move |event| {
+                if let Ok(data) = serde_json::from_str(event.payload()) {
+                    f(data)
+                }
+            });
+    }
+
+    pub fn get_opening_notification_data<T: NotificationDataTrait>(
+        &self,
+    ) -> crate::Result<Option<T>> {
+        // Not implemented yet
+        Ok(None)
     }
 }

@@ -27,12 +27,13 @@ pub struct PushPermissionResponse {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct PermissionResponse {
+pub struct PermissionResponse {
     pub notification: PermissionState,
 }
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-struct RequestPermission {
-    notification: bool,
+pub struct RequestPermission {
+    pub notification: bool,
 }
+pub trait NotificationDataTrait: Serialize + Clone + for<'de> Deserialize<'de> {}
