@@ -81,7 +81,9 @@ impl<R: Runtime> PushNotifications<R> {
         &self,
         f: F,
     ) -> crate::Result<()> {
-        self.register_event_handler::<T>()?;
+        #[cfg(target_os = "android")]
+        {
+              self.register_event_handler::<T>()?;
         let _ = self
             .0
             .app()
@@ -90,6 +92,9 @@ impl<R: Runtime> PushNotifications<R> {
                     f(data)
                 }
             });
+        }
+
+      
 
         Ok(())
     }
@@ -104,14 +109,19 @@ pub fn get_opening_notification_data<T: NotificationDataTrait>(
                 .run_mobile_plugin::<Option<T>>("getOpeningNotificationData", ())
                 .map_err(Into::into)
         }
+        #[cfg(target_os = "ios")]
+        {
+            self.0
+                .run_mobile_plugin::<Option<T>>("getOpeningNotificationData", ())
+                .map_err(Into::into)
+        }
     }
 
-
+#[cfg(target_os = "android")]
 fn register_event_handler<T: NotificationDataTrait>(
         &self,
     ) -> crate::Result<()> {
-        #[cfg(target_os = "android")]
-        {
+        
             use tauri::ipc::{Channel, InvokeResponseBody};
             use tauri::Emitter;
             #[derive(Serialize)]
@@ -150,7 +160,7 @@ fn register_event_handler<T: NotificationDataTrait>(
                 },
             )?;
             Ok(())
-        }
+        
     }
 
 }
