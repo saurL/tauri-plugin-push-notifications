@@ -46,7 +46,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
     }
 
     // MARK: - Request notification permissions
-    @objc public func requestPermissions(_ invoke: Invoke) {
+    @objc override public func requestPermissions(_ invoke: Invoke) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if let error = error {
                 invoke.reject(error.localizedDescription)
@@ -57,7 +57,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
     }
 
     // MARK: - Check current permission status
-    @objc public func checkPermissions(_ invoke: Invoke) {
+    @objc override public func checkPermissions(_ invoke: Invoke) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             let permission: String
             switch settings.authorizationStatus {
