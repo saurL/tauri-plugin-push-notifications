@@ -20,6 +20,7 @@ let package = Package(
   ],
   dependencies: [
     .package(name: "Tauri", path: "../.tauri/tauri-api")
+    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "8.0.0")
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define a module or a test suite.
