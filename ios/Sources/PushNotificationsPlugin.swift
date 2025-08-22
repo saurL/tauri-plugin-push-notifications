@@ -23,15 +23,23 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
 
     // Called when plugin is loaded
     public override func load(webview: WKWebView) {
-        
-        // Initialize Firebase if needed
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-        }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(initFirebase),
+            name: UIApplication.didFinishLaunchingNotification,
+            object: nil
+        )
 
-        // Chain previous delegate to avoid breaking other notifications
-        Messaging.messaging().delegate = self
+@objc private func initFirebase() {
+    if FirebaseApp.app() == nil {
+        FirebaseApp.configure()
     }
+    Messaging.messaging().delegate = self
+
+    if UNUserNotificationCenter.current().delegate == nil {
+        UNUserNotificationCenter.current().delegate = self
+    }
+}
 
     // MARK: - JS Method: Get FCM token
     @objc public func get_fcm_token(_ invoke: Invoke) throws {
