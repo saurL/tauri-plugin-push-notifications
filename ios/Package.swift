@@ -8,7 +8,7 @@ import PackageDescription
 let package = Package(
   name: "tauri-plugin-push-notifications",
   platforms: [
-    .macOS(.v10_13),
+    .macOS(.v10_15),
     .iOS(.v13),
   ],
   products: [
