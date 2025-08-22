@@ -26,7 +26,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         
         // Initialize Firebase if needed
         if FirebaseApp.app() == nil {
-         //   FirebaseApp.configure()
+            FirebaseApp.configure()
         }
 
         // Chain previous delegate to avoid breaking other notifications
