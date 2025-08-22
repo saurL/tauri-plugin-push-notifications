@@ -39,8 +39,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
             FirebaseApp.configure()
         }
         Messaging.messaging().delegate = self
-        Messaging.messaging().setAPNSToken(args.token, type: .unknown)
-
+        Messaging.messaging().apnsToken = args.token
         if UNUserNotificationCenter.current().delegate == nil {
             UNUserNotificationCenter.current().delegate = self
         }
@@ -50,12 +49,9 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
     @objc public func get_fcm_token(_ invoke: Invoke) throws {
         Messaging.messaging().token { token, error in
             if let error = error {
-                invoke.reject("Error fetching FCM registration token: \(error)")
+                invoke.reject("Error fetching FCM registration token: \(error.localizedDescription)")
             } else if let token = token {
-                print("FCM registration token: \(token)")
-                // ici tu peux le renvoyer à ton JS via le plugin
                 invoke.resolve(["token": token])
-
             }
         }         
     }
