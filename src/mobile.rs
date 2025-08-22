@@ -48,14 +48,32 @@ impl<R: Runtime> PushNotifications<R> {
         }
     }
 
-    pub fn get_push_token(
+    pub fn get_fcm_token(
         &self,
         state: State<Mutex<PushTokenState>>,
         _payload: PushTokenRequest,
     ) -> crate::Result<PushTokenResponse> {
         self.0
-            .run_mobile_plugin("push_token", _payload)
+            .run_mobile_plugin("get_fcm_token", _payload)
             .map_err(Into::into)
+    }
+    #[cfg(any(target_os = "ios"))]
+    pub fn get_apns_token(
+        &self,
+        state: State<Mutex<PushTokenState>>,
+        _payload: PushTokenRequest,
+    ) -> crate::Result<PushTokenResponse> {
+        let state = state.lock().unwrap();
+
+        match &state.token {
+            Some(token) => {
+                let encoded = general_purpose::STANDARD.encode(&token);
+                Ok(PushTokenResponse {
+                    value: Some(encoded.clone()),
+                })
+            }
+            None => Ok(PushTokenResponse { value: None }),
+        }
     }
 
     pub fn request_notification_permission(&self) -> crate::Result<PermissionState> {
@@ -73,6 +91,7 @@ impl<R: Runtime> PushNotifications<R> {
             .run_mobile_plugin::<PermissionResponse>("checkPermissions", ())
             .map_err(Into::into)
     }
+        #[cfg(target_os = "android")]
 
     pub fn on_notification_clicked<
         F: Fn(T) + Send + 'static,
@@ -81,8 +100,7 @@ impl<R: Runtime> PushNotifications<R> {
         &self,
         f: F,
     ) -> crate::Result<()> {
-        #[cfg(target_os = "android")]
-        {
+        
               self.register_event_handler::<T>()?;
         let _ = self
             .0
@@ -92,15 +110,29 @@ impl<R: Runtime> PushNotifications<R> {
                     f(data)
                 }
             });
-        }
+     
+
+
 
       
 
-        Ok(())
+    }
+        #[cfg(target_os = "ios")]
+
+        pub fn on_notification_clicked<
+        F: Fn(T) + Send + 'static,
+        T: NotificationDataTrait,
+    >(
+        &self,
+        f: F,
+    ) -> crate::Result<()> {
+       Ok(())
     }
 
     
-pub fn get_opening_notification_data<T: NotificationDataTrait>(
+
+    
+    pub fn get_opening_notification_data<T: NotificationDataTrait>(
         &self,
     ) -> crate::Result<Option<T>> {
         #[cfg(target_os = "android")]
@@ -117,8 +149,10 @@ pub fn get_opening_notification_data<T: NotificationDataTrait>(
         }
     }
 
-#[cfg(target_os = "android")]
-fn register_event_handler<T: NotificationDataTrait>(
+
+
+    #[cfg(target_os = "android")]
+    fn register_event_handler<T: NotificationDataTrait>(
         &self,
     ) -> crate::Result<()> {
         

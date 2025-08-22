@@ -1,4 +1,4 @@
-const COMMANDS: &[&str] = &["push_token", "request_push_permission"];
+const COMMANDS: &[&str] = &["get_fcm_token", "get_apns_token", "request_push_permission","registerListener","unregister_listener"];
 
 fn main() {
     tauri_plugin::Builder::new(COMMANDS)

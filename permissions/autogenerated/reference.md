@@ -4,8 +4,11 @@ Default permissions for the plugin
 
 #### This default permission set includes the following:
 
-- `allow-push-token`
+- `allow-get-fcm-token`
 - `allow-request-push-permission`
+- `allow-get-apns-token`
+- `allow-registerListener`
+- `allow-unregister-listener`
 
 ## Permission Table
 
@@ -19,12 +22,12 @@ Default permissions for the plugin
 <tr>
 <td>
 
-`push-notifications:allow-push-token`
+`push-notifications:allow-get-apns-token`
 
 </td>
 <td>
 
-Enables the push_token command without any pre-configured scope.
+Enables the get_apns_token command without any pre-configured scope.
 
 </td>
 </tr>
@@ -32,12 +35,64 @@ Enables the push_token command without any pre-configured scope.
 <tr>
 <td>
 
-`push-notifications:deny-push-token`
+`push-notifications:deny-get-apns-token`
 
 </td>
 <td>
 
-Denies the push_token command without any pre-configured scope.
+Denies the get_apns_token command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:allow-get-fcm-token`
+
+</td>
+<td>
+
+Enables the get_fcm_token command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:deny-get-fcm-token`
+
+</td>
+<td>
+
+Denies the get_fcm_token command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:allow-registerListener`
+
+</td>
+<td>
+
+Enables the registerListener command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:deny-registerListener`
+
+</td>
+<td>
+
+Denies the registerListener command without any pre-configured scope.
 
 </td>
 </tr>
@@ -64,6 +119,32 @@ Enables the request_push_permission command without any pre-configured scope.
 <td>
 
 Denies the request_push_permission command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:allow-unregister-listener`
+
+</td>
+<td>
+
+Enables the unregister_listener command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:deny-unregister-listener`
+
+</td>
+<td>
+
+Denies the unregister_listener command without any pre-configured scope.
 
 </td>
 </tr>

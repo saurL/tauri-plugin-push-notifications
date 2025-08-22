@@ -295,16 +295,40 @@
       "type": "string",
       "oneOf": [
         {
-          "description": "Enables the push_token command without any pre-configured scope.",
+          "description": "Enables the get_apns_token command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-push-token",
-          "markdownDescription": "Enables the push_token command without any pre-configured scope."
+          "const": "allow-get-apns-token",
+          "markdownDescription": "Enables the get_apns_token command without any pre-configured scope."
         },
         {
-          "description": "Denies the push_token command without any pre-configured scope.",
+          "description": "Denies the get_apns_token command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-push-token",
-          "markdownDescription": "Denies the push_token command without any pre-configured scope."
+          "const": "deny-get-apns-token",
+          "markdownDescription": "Denies the get_apns_token command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the get_fcm_token command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-get-fcm-token",
+          "markdownDescription": "Enables the get_fcm_token command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the get_fcm_token command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-get-fcm-token",
+          "markdownDescription": "Denies the get_fcm_token command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the registerListener command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-registerListener",
+          "markdownDescription": "Enables the registerListener command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the registerListener command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-registerListener",
+          "markdownDescription": "Denies the registerListener command without any pre-configured scope."
         },
         {
           "description": "Enables the request_push_permission command without any pre-configured scope.",
@@ -319,10 +343,22 @@
           "markdownDescription": "Denies the request_push_permission command without any pre-configured scope."
         },
         {
-          "description": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-push-token`\n- `allow-request-push-permission`",
+          "description": "Enables the unregister_listener command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-unregister-listener",
+          "markdownDescription": "Enables the unregister_listener command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the unregister_listener command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-unregister-listener",
+          "markdownDescription": "Denies the unregister_listener command without any pre-configured scope."
+        },
+        {
+          "description": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-request-push-permission`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`",
           "type": "string",
           "const": "default",
-          "markdownDescription": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-push-token`\n- `allow-request-push-permission`"
+          "markdownDescription": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-request-push-permission`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`"
         }
       ]
     }

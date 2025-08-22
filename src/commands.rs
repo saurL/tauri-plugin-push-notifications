@@ -22,3 +22,19 @@ pub(crate) async fn push_token<R: Runtime>(app: AppHandle<R>) -> Result<PushToke
     app.push_notifications()
         .get_push_token(state, PushTokenRequest {})
 }
+#[cfg(mobile)]
+#[command]
+pub(crate) async fn request_fcm_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
+    let state = app.state::<Mutex<PushTokenState>>();
+
+    app.push_notifications()
+        .get_push_token(state, PushTokenRequest {})
+}
+#[cfg(any(target_os = "macos", target_os = "ios"))]
+#[command]
+pub(crate) async fn request_apns_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
+    let state = app.state::<Mutex<PushTokenState>>();
+
+    app.push_notifications()
+        .get_push_token(state, PushTokenRequest {})
+}

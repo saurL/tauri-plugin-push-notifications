@@ -68,7 +68,7 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
     }
 
     @Command
-    fun push_token(invoke: Invoke) {
+    fun get_fcm_token(invoke: Invoke) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 invoke.reject("Failed to get FCM token", task.exception)
@@ -92,4 +92,12 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
     fun getOpeningNotificationData(invoke: Invoke) {
         invoke.resolve(this.openningNotificationData)
     }
+
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        val payload = JSObject()
+        payload.put("token", token)
+        trigger("new_fcm_token", payload)
+    }
+
 }
