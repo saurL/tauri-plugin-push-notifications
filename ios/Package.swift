@@ -19,7 +19,7 @@ let package = Package(
       targets: ["tauri-plugin-push-notifications"])
   ],
   dependencies: [
-    .package(name: "Tauri", path: "../.tauri/tauri-api")
+    .package(name: "Tauri", path: "../.tauri/tauri-api"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "8.0.0")
   ],
   targets: [
