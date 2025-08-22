@@ -9,6 +9,8 @@ Default permissions for the plugin
 - `allow-get-apns-token`
 - `allow-registerListener`
 - `allow-unregister-listener`
+- `allow-checkPermissions`
+- `allow-requestPermissions`
 
 ## Permission Table
 

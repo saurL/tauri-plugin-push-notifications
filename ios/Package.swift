@@ -32,8 +32,8 @@ let package = Package(
       name: "tauri-plugin-push-notifications",
       dependencies: [
         .byName(name: "Tauri"),
-        .product(name: "FirebaseCore", package: "firebase-ios-sdk"),
-        .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")
+        .byName(name: "FirebaseCore"),
+        .byName(name: "FirebaseMessaging")
       ],
       path: "Sources")
   ]

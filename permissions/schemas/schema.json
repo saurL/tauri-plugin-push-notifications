@@ -379,10 +379,10 @@
           "markdownDescription": "Denies the unregister_listener command without any pre-configured scope."
         },
         {
-          "description": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-request-push-permission`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`",
+          "description": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-request-push-permission`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`\n- `allow-checkPermissions`\n- `allow-requestPermissions`",
           "type": "string",
           "const": "default",
-          "markdownDescription": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-request-push-permission`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`"
+          "markdownDescription": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-request-push-permission`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`\n- `allow-checkPermissions`\n- `allow-requestPermissions`"
         }
       ]
     }
