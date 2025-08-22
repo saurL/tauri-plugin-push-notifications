@@ -26,11 +26,11 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         
         // Initialize Firebase if needed
         if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
+         //   FirebaseApp.configure()
         }
 
         // Chain previous delegate to avoid breaking other notifications
-        //Messaging.messaging().delegate = self
+        Messaging.messaging().delegate = self
     }
 
     // MARK: - JS Method: Get FCM token
