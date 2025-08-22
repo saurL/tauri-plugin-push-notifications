@@ -295,6 +295,18 @@
       "type": "string",
       "oneOf": [
         {
+          "description": "Enables the checkPermissions command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-checkPermissions",
+          "markdownDescription": "Enables the checkPermissions command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the checkPermissions command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-checkPermissions",
+          "markdownDescription": "Denies the checkPermissions command without any pre-configured scope."
+        },
+        {
           "description": "Enables the get_apns_token command without any pre-configured scope.",
           "type": "string",
           "const": "allow-get-apns-token",
@@ -329,6 +341,18 @@
           "type": "string",
           "const": "deny-registerListener",
           "markdownDescription": "Denies the registerListener command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the requestPermissions command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-requestPermissions",
+          "markdownDescription": "Enables the requestPermissions command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the requestPermissions command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-requestPermissions",
+          "markdownDescription": "Denies the requestPermissions command without any pre-configured scope."
         },
         {
           "description": "Enables the request_push_permission command without any pre-configured scope.",

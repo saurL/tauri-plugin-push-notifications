@@ -22,6 +22,32 @@ Default permissions for the plugin
 <tr>
 <td>
 
+`push-notifications:allow-checkPermissions`
+
+</td>
+<td>
+
+Enables the checkPermissions command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:deny-checkPermissions`
+
+</td>
+<td>
+
+Denies the checkPermissions command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
 `push-notifications:allow-get-apns-token`
 
 </td>
@@ -93,6 +119,32 @@ Enables the registerListener command without any pre-configured scope.
 <td>
 
 Denies the registerListener command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:allow-requestPermissions`
+
+</td>
+<td>
+
+Enables the requestPermissions command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`push-notifications:deny-requestPermissions`
+
+</td>
+<td>
+
+Denies the requestPermissions command without any pre-configured scope.
 
 </td>
 </tr>
