@@ -15,7 +15,6 @@ import FirebaseMessaging
 class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     // Store reference to previous delegate to chain calls
-    private var previousDelegate: UNUserNotificationCenterDelegate?
     private var pendingNotification: [AnyHashable: Any]?
 
     override init() {
@@ -31,7 +30,6 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         }
 
         // Chain previous delegate to avoid breaking other notifications
-        previousDelegate = UNUserNotificationCenter.current().delegate
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
     }
@@ -94,7 +92,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         completionHandler([.banner, .sound])
 
         // Call previous delegate if exists
-        previousDelegate?.userNotificationCenter?(center, willPresent: notification, withCompletionHandler: completionHandler)
+        
     }
 
     // Called when notification is tapped (app in background or closed)
@@ -106,8 +104,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         pendingNotification = response.notification.request.content.userInfo
         sendPendingNotificationToJS()
 
-        // Call previous delegate if exists
-        previousDelegate?.userNotificationCenter?(center, didReceive: response, withCompletionHandler: completionHandler) ?? completionHandler()
+
     }
 
 
