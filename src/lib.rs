@@ -69,7 +69,12 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                     let state = app.state::<Mutex<PushTokenState>>();
                     let mut state = state.lock().unwrap();
                     let owned = token.to_owned();
+                    #[cfg(any(target_os = "ios"))]
+                    app.push_notifications().init_firebase(InitFirebaseRequest {
+                        token: owned.clone(),
+                    }).unwrap_or(());
                     state.token = Some(owned);
+
                 }
 
                 RunEvent::PushRegistrationFailed(err) => {

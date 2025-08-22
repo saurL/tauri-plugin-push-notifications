@@ -10,6 +10,10 @@ import WebKit
 import FirebaseCore
 import FirebaseMessaging
 
+class InitFirebaseRequest: Decodable {
+  let token: Data
+}
+
 // MARK: - Firebase Push Notifications Plugin
 class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, MessagingDelegate {
 
@@ -22,38 +26,20 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
 
     // Called when plugin is loaded
     public override func load(webview: WKWebView) {
-        // Setup firebase after didFinishLaunchingNotification otherwise It cause an error
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(initFirebase),
-            name: UIApplication.didFinishLaunchingNotification,
-            object: nil
-        )
-
-         NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(apnsTokenReceived(_:)),
-            name: UIApplication.didRegisterForRemoteNotificationsNotification,
-            object: nil
-        )
     }
 
-    @objc private func apnsTokenReceived(_ notification: Notification) {
-        if let deviceToken = notification.object as? Data {
-            // Assigner le token APNs à Firebase
-            Messaging.messaging().apnsToken = deviceToken
-            print("APNs token assigned to Firebase: \(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())")
-        }
-        self.initFirebase()
-    }
+
 
 
     // MARK: - Firebase initialization
-    @objc private func initFirebase() {
+    @objc public func initFirebase(_ invoke: Invoke) {
+        let args = try invoke.parseArgs(InitFirebaseRequest.self)
+
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
         Messaging.messaging().delegate = self
+        Messaging.messaging().setAPNSToken(args.token, type: .unknown)
 
         if UNUserNotificationCenter.current().delegate == nil {
             UNUserNotificationCenter.current().delegate = self

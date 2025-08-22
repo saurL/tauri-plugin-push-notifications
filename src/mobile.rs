@@ -11,8 +11,10 @@ use crate::PushTokenState;
 use tauri::Listener;
 use serde::{Serialize, Deserialize};
 use tauri::plugin::PermissionState;
+
 #[cfg(target_os = "ios")]
 tauri::ios_plugin_binding!(init_plugin_push_notifications);
+
 
 // initializes the Kotlin or Swift plugin classes
 pub fn init<R: Runtime, C: DeserializeOwned>(
@@ -74,6 +76,13 @@ impl<R: Runtime> PushNotifications<R> {
             }
             None => Ok(PushTokenResponse { value: None }),
         }
+    }
+
+    #[cfg(any(target_os = "ios"))]
+    pub fn init_firebase(&self, request: InitFirebaseRequest) -> crate::Result<()> {
+            self.0
+                .run_mobile_plugin::<()>("initFirebase", request)
+                .map_err(Into::into)
     }
 
     pub fn request_notification_permission(&self) -> crate::Result<PermissionState> {
