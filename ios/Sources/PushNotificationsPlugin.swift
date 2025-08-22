@@ -30,7 +30,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         }
 
         // Chain previous delegate to avoid breaking other notifications
-        Messaging.messaging().delegate = self
+        //Messaging.messaging().delegate = self
     }
 
     // MARK: - JS Method: Get FCM token
