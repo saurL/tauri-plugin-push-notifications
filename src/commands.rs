@@ -7,7 +7,7 @@ use crate::{PushTokenState, Result};
 
 #[cfg(mobile)]
 #[command]
-pub(crate) async fn request_fcm_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
+pub(crate) async fn get_fcm_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
     let state = app.state::<Mutex<PushTokenState>>();
 
     app.push_notifications()
@@ -15,7 +15,7 @@ pub(crate) async fn request_fcm_token<R: Runtime>(app: AppHandle<R>) -> Result<P
 }
 #[cfg(any(target_os = "macos", target_os = "ios"))]
 #[command]
-pub(crate) async fn request_apns_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
+pub(crate) async fn get_apns_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
     let state = app.state::<Mutex<PushTokenState>>();
 
     app.push_notifications()
