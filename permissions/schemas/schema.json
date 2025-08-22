@@ -355,18 +355,6 @@
           "markdownDescription": "Denies the requestPermissions command without any pre-configured scope."
         },
         {
-          "description": "Enables the request_push_permission command without any pre-configured scope.",
-          "type": "string",
-          "const": "allow-request-push-permission",
-          "markdownDescription": "Enables the request_push_permission command without any pre-configured scope."
-        },
-        {
-          "description": "Denies the request_push_permission command without any pre-configured scope.",
-          "type": "string",
-          "const": "deny-request-push-permission",
-          "markdownDescription": "Denies the request_push_permission command without any pre-configured scope."
-        },
-        {
           "description": "Enables the unregister_listener command without any pre-configured scope.",
           "type": "string",
           "const": "allow-unregister-listener",
@@ -379,10 +367,10 @@
           "markdownDescription": "Denies the unregister_listener command without any pre-configured scope."
         },
         {
-          "description": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-request-push-permission`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`\n- `allow-checkPermissions`\n- `allow-requestPermissions`",
+          "description": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`\n- `allow-checkPermissions`\n- `allow-requestPermissions`",
           "type": "string",
           "const": "default",
-          "markdownDescription": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-request-push-permission`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`\n- `allow-checkPermissions`\n- `allow-requestPermissions`"
+          "markdownDescription": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-get-fcm-token`\n- `allow-get-apns-token`\n- `allow-registerListener`\n- `allow-unregister-listener`\n- `allow-checkPermissions`\n- `allow-requestPermissions`"
         }
       ]
     }

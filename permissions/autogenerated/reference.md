@@ -5,7 +5,6 @@ Default permissions for the plugin
 #### This default permission set includes the following:
 
 - `allow-get-fcm-token`
-- `allow-request-push-permission`
 - `allow-get-apns-token`
 - `allow-registerListener`
 - `allow-unregister-listener`
@@ -147,32 +146,6 @@ Enables the requestPermissions command without any pre-configured scope.
 <td>
 
 Denies the requestPermissions command without any pre-configured scope.
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-`push-notifications:allow-request-push-permission`
-
-</td>
-<td>
-
-Enables the request_push_permission command without any pre-configured scope.
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-`push-notifications:deny-request-push-permission`
-
-</td>
-<td>
-
-Denies the request_push_permission command without any pre-configured scope.
 
 </td>
 </tr>
