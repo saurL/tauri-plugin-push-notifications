@@ -80,7 +80,7 @@ impl<R: Runtime> PushNotifications<R> {
 
     #[cfg(any(target_os = "ios"))]
     pub fn init_firebase(&self, request: InitFirebaseRequest) -> crate::Result<()> {
-        println!("Initializing Firebase with APNs token: {}", request.token);
+        println!("Initializing Firebase with APNs token: {:?}", request.token);
             self.0
                 .run_mobile_plugin::<()>("initFirebase", request)
                 .map_err(Into::into)
