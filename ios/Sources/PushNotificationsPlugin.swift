@@ -30,7 +30,6 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         }
 
         // Chain previous delegate to avoid breaking other notifications
-        UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
     }
 
@@ -81,7 +80,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
     }
 
     // MARK: - UNUserNotificationCenterDelegate
-
+    /*
     // Called when notification is received in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
@@ -114,6 +113,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         guard let pending = pendingNotification else { return }
         pendingNotification = nil
     }
+    */
 }
 
 // MARK: - Plugin initialization
