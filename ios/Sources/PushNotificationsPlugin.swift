@@ -11,10 +11,9 @@ import FirebaseCore
 import FirebaseMessaging
 
 // MARK: - Firebase Push Notifications Plugin
-
 class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, MessagingDelegate {
 
-    // Store reference to previous delegate to chain calls
+    // Store reference to pending notification
     private var pendingNotification: [AnyHashable: Any]?
 
     override init() {
@@ -29,17 +28,19 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
             name: UIApplication.didFinishLaunchingNotification,
             object: nil
         )
-
-@objc private func initFirebase() {
-    if FirebaseApp.app() == nil {
-        FirebaseApp.configure()
     }
-    Messaging.messaging().delegate = self
 
-    if UNUserNotificationCenter.current().delegate == nil {
-        UNUserNotificationCenter.current().delegate = self
+    // MARK: - Firebase initialization
+    @objc private func initFirebase() {
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
+        Messaging.messaging().delegate = self
+
+        if UNUserNotificationCenter.current().delegate == nil {
+            UNUserNotificationCenter.current().delegate = self
+        }
     }
-}
 
     // MARK: - JS Method: Get FCM token
     @objc public func get_fcm_token(_ invoke: Invoke) throws {
@@ -84,39 +85,23 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         if let fcmToken = fcmToken {
             trigger("new_fcm_token", data: ["token": fcmToken])
         }
-
     }
 
     // MARK: - UNUserNotificationCenterDelegate
     /*
-    // Called when notification is received in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // Send data to JS
-
-        // Present the notification as banner + sound
         completionHandler([.banner, .sound])
-
-        // Call previous delegate if exists
-        
     }
 
-    // Called when notification is tapped (app in background or closed)
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-
-        // Store pending notification in case JS is not ready
         pendingNotification = response.notification.request.content.userInfo
         sendPendingNotificationToJS()
-
-
     }
 
-
-
-    // Send pending notification if app just launched
     private func sendPendingNotificationToJS() {
         guard let pending = pendingNotification else { return }
         pendingNotification = nil
