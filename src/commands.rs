@@ -11,7 +11,7 @@ pub(crate) async fn request_fcm_token<R: Runtime>(app: AppHandle<R>) -> Result<P
     let state = app.state::<Mutex<PushTokenState>>();
 
     app.push_notifications()
-        .get_push_token(state, PushTokenRequest {})
+        .get_fcm_token(state, PushTokenRequest {})
 }
 #[cfg(any(target_os = "macos", target_os = "ios"))]
 #[command]
