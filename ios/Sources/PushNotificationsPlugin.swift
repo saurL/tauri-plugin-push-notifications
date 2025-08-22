@@ -50,9 +50,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
     @objc public func get_fcm_token(_ invoke: Invoke) throws {
         Messaging.messaging().token { token, error in
             if let error = error {
-                print("Error fetching FCM registration token: \(error)")
-            invoke.reject("FCM token not available yet")
-
+                invoke.reject("Error fetching FCM registration token: \(error)")
             } else if let token = token {
                 print("FCM registration token: \(token)")
                 // ici tu peux le renvoyer à ton JS via le plugin
