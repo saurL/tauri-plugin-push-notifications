@@ -32,7 +32,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
 
 
     // MARK: - Firebase initialization
-    @objc public func initFirebase(_ invoke: Invoke) {
+    @objc public func initFirebase(_ invoke: Invoke) throws {
         let args = try invoke.parseArgs(InitFirebaseRequest.self)
 
         if FirebaseApp.app() == nil {
