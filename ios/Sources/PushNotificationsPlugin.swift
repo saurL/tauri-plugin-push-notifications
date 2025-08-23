@@ -59,7 +59,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
                 invoke.reject("Error fetching FCM registration token: \(error.localizedDescription)")
             } else if let token = token {
                 self.logger.info("Fetched FCM registration token: \(token)")
-                invoke.resolve(["token": token])
+                invoke.resolve(["value": token])
             }
             else {
                 self.logger.error("FCM registration token is nil")
