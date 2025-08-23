@@ -9,6 +9,7 @@ import UserNotifications
 import WebKit
 import FirebaseCore
 import FirebaseMessaging
+import os
 
 class InitFirebaseRequest: Decodable {
   let token: Data
@@ -19,6 +20,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
 
     // Store reference to pending notification
     private var pendingNotification: [AnyHashable: Any]?
+    private var logger = Logger(subsystem: "PushNotificationsPlugin", category: "fcmtoken")
 
     override init() {
         super.init()
@@ -33,6 +35,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
 
     // MARK: - Firebase initialization
     @objc public func initFirebase(_ invoke: Invoke) throws {
+        self.logger.info("Initializing Firebase")
         let args = try invoke.parseArgs(InitFirebaseRequest.self)
 
         if FirebaseApp.app() == nil {
@@ -43,14 +46,19 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         if UNUserNotificationCenter.current().delegate == nil {
             UNUserNotificationCenter.current().delegate = self
         }
+        self.logger.info("Firebase initialized")
+        invoke.resolve()
     }
 
     // MARK: - JS Method: Get FCM token
     @objc public func get_fcm_token(_ invoke: Invoke) throws {
+        self.logger.info("Fetching FCM registration token")
         Messaging.messaging().token { token, error in
             if let error = error {
+                self.logger.error("Error fetching FCM registration token: \(error.localizedDescription)")
                 invoke.reject("Error fetching FCM registration token: \(error.localizedDescription)")
             } else if let token = token {
+                self.logger.info("Fetched FCM registration token: \(token)")
                 invoke.resolve(["token": token])
             }
         }         
