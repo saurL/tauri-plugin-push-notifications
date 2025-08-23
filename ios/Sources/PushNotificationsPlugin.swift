@@ -61,6 +61,10 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
                 self.logger.info("Fetched FCM registration token: \(token)")
                 invoke.resolve(["token": token])
             }
+            else {
+                self.logger.error("FCM registration token is nil")
+                invoke.reject("FCM registration token is nil")
+            }
         }         
     }
 
