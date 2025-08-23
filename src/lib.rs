@@ -75,7 +75,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                     let owned = token.to_owned();
                     #[cfg(target_os = "ios")]
                     {
-                        let string_token = general_purpose::STANDARD.encode(&apns_token_bytes);
+                        let string_token = general_purpose::STANDARD.encode(&owned);
 
                         match app.push_notifications().init_firebase(InitFirebaseRequest {
                             token: string_token,
