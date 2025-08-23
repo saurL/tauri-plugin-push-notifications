@@ -23,6 +23,9 @@ use desktop::PushNotifications;
 use mobile::PushNotifications;
 #[cfg(target_os = "ios")]
 use base64::engine::general_purpose;
+#[cfg(target_os = "ios")]
+use base64::Engine;
+
 /// Structure of push token state managed by the plugin.
 #[derive(Default, Clone)]
 pub struct PushTokenState {
@@ -70,7 +73,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                     let state = app.state::<Mutex<PushTokenState>>();
                     let mut state = state.lock().unwrap();
                     let owned = token.to_owned();
-                    #[cfg(any(target_os = "ios"))]
+                    #[cfg(target_os = "ios")]
                     {
                         let string_token = general_purpose::STANDARD.encode(&apns_token_bytes);
 
