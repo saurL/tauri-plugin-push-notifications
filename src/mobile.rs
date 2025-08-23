@@ -110,7 +110,7 @@ impl<R: Runtime> PushNotifications<R> {
         f: F,
     ) -> crate::Result<()> {
         
-              self.register_event_handler::<T>()?;
+        self.register_event_handler::<T>()?;
         let _ = self
             .0
             .app()
@@ -119,12 +119,7 @@ impl<R: Runtime> PushNotifications<R> {
                     f(data)
                 }
             });
-     
-
-
-
-      
-
+        Ok(())
     }
         #[cfg(target_os = "ios")]
 
