@@ -20,10 +20,6 @@ class AppMessagingService : FirebaseMessagingService() {
         //
     }
 
-    // Dispatched when a new push token is generated.
-    override fun onNewToken(token: String) {
-        this.messagingToken.set(token)
-    }
 
     override fun onCreate() {
         check(messagingServiceSingleton.get() == null) { "AppMessagingService already active" }
