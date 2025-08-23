@@ -21,7 +21,8 @@ pub use error::{Error, Result};
 use desktop::PushNotifications;
 #[cfg(mobile)]
 use mobile::PushNotifications;
-
+#[cfg(target_os = "ios")]
+use base64::engine::general_purpose;
 /// Structure of push token state managed by the plugin.
 #[derive(Default, Clone)]
 pub struct PushTokenState {
