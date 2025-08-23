@@ -41,6 +41,6 @@ pub trait NotificationDataTrait: Serialize + Clone + for<'de> Deserialize<'de> {
 #[cfg(any(target_os = "ios"))]
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct InitFirebaseRequest {
-    pub token: Vec<u8>,
+    pub token: String,
 }
 

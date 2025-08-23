@@ -70,14 +70,18 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                     let mut state = state.lock().unwrap();
                     let owned = token.to_owned();
                     #[cfg(any(target_os = "ios"))]
-                    match app.push_notifications().init_firebase(InitFirebaseRequest {
-                        token: owned.clone(),
-                    }) {
-                        Ok(_) => {println!("Firebase initialized successfully");}
-                        Err(err) => {
-                            eprintln!("Failed to initialize Firebase: {}", err);
-                        }
-                    };
+                    {
+                        let string_token = general_purpose::STANDARD.encode(&apns_token_bytes);
+
+                        match app.push_notifications().init_firebase(InitFirebaseRequest {
+                            token: string_token,
+                        }) {
+                            Ok(_) => {println!("Firebase initialized successfully");}
+                            Err(err) => {
+                                eprintln!("Failed to initialize Firebase: {}", err);
+                            }
+                        };
+                    }
                     state.token = Some(owned);
 
                 }
