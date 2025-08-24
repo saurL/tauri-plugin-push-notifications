@@ -26,6 +26,11 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
 
     // Called when plugin is loaded
     public override func load(webview: WKWebView) {
+         let center = UNUserNotificationCenter.current()
+        if center.delegate != nil {
+            previousDelegate = center.delegate
+        }
+        center.delegate = self
         UIApplication.shared.registerForRemoteNotifications()
     }
 
@@ -41,9 +46,6 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         }
         Messaging.messaging().delegate = self
         Messaging.messaging().apnsToken = args.token
-        if UNUserNotificationCenter.current().delegate == nil {
-            UNUserNotificationCenter.current().delegate = self
-        }
         invoke.resolve()
     }
 
@@ -98,25 +100,23 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
     }
 
     // MARK: - UNUserNotificationCenterDelegate
-    /*
+
+    // Called when a notification is delivered to a foreground app.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner, .sound])
+        completionHandler([]) 
     }
 
+    // Called when a notification is tapped
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         pendingNotification = response.notification.request.content.userInfo
-        sendPendingNotificationToJS()
+        completionHandler([]) 
     }
 
-    private func sendPendingNotificationToJS() {
-        guard let pending = pendingNotification else { return }
-        pendingNotification = nil
-    }
-    */
+    
 }
 
 // MARK: - Plugin initialization
