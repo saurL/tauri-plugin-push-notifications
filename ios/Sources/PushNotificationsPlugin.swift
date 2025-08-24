@@ -110,7 +110,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         pendingNotification = response.notification.request.content.userInfo
-        completionHandler([]) 
+        completionHandler() 
     }
 
     
