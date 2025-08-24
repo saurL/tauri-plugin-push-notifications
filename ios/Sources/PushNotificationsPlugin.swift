@@ -27,9 +27,6 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
     // Called when plugin is loaded
     public override func load(webview: WKWebView) {
          let center = UNUserNotificationCenter.current()
-        if center.delegate != nil {
-            previousDelegate = center.delegate
-        }
         center.delegate = self
         UIApplication.shared.registerForRemoteNotifications()
     }
