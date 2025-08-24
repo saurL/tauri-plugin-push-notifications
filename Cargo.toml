@@ -16,7 +16,7 @@ serde_json = "^1"
 base64 = "^0"
 log = "0.4.27"
 [build-dependencies]
-tauri-plugin = { version = "^2", features = ["build"] }
+tauri-plugin = { version = "^2" }
 
 
 [patch.crates-io]
