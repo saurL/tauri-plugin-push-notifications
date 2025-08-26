@@ -59,8 +59,8 @@ if std::env::var("CARGO_FEATURE_IOS_FCM").is_ok() {
             import_statement,
         );
 
-        let interface = r#"MessagingDelegate"#;
-        
+        let interface = r#",MessagingDelegate"#;
+
         write_features_file(
             "ios/Sources/PushNotificationsPlugin.swift",
             "/* INTERFACE PLACEHOLDER */",

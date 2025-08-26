@@ -13,7 +13,7 @@ class InitFirebaseRequest: Decodable {
 }
 
 // MARK: - Firebase Push Notifications Plugin
-class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, /* INTERFACE PLACEHOLDER */ {
+class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTERFACE PLACEHOLDER */ {
 
     // Store reference to pending notification
     private var pendingNotification: [AnyHashable: Any]?
