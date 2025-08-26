@@ -1,7 +1,8 @@
 use serde::{ser::Serializer, Serialize};
 
 pub type Result<T> = std::result::Result<T, Error>;
-
+#[cfg(mobile)]
+use tauri::plugin::mobile::ErrorResponse;
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error(transparent)]
@@ -19,6 +20,7 @@ impl Serialize for Error {
         serializer.serialize_str(self.to_string().as_ref())
     }
 }
+#[cfg(mobile)]
 impl From<&str> for Error {
     fn from(s: &str) -> Self {
         Error::PluginInvoke(ErrorResponse {
