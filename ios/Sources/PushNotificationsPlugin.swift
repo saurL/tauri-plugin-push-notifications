@@ -32,19 +32,6 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
 
     /* FUNCTION PLACEHOLDER */
     
-    // MARK: - JS Method: Get FCM token
-    @objc public func get_fcm_token(_ invoke: Invoke) throws {
-        Messaging.messaging().token { token, error in
-            if let error = error {
-                invoke.reject("Error fetching FCM registration token: \(error.localizedDescription)")
-            } else if let token = token {
-                invoke.resolve(["value": token])
-            }
-            else {
-                invoke.reject("FCM registration token is nil")
-            }
-        }         
-    }
 
     // MARK: - Request notification permissions
     @objc override public func requestPermissions(_ invoke: Invoke) {

@@ -19,7 +19,7 @@ log = "0.4.27"
 tauri-plugin = { version = "^2" }
 
 [features]
-ios-fcm = []   # notre feature
+ios-fcm = [] 
 
 
 [patch.crates-io]
