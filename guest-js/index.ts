@@ -40,13 +40,3 @@ export async function onNewFcmToken(
     handler
   );
 }
-
-export async function onNewApnsToken(
-  handler: (token: string) => void
-): Promise<PluginListener> {
-  return await addPluginListener(
-    'push-notifications',
-    'new_apns_token',
-    handler
-  );
-}
