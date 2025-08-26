@@ -34,6 +34,12 @@ if std::env::var("CARGO_FEATURE_IOS_FCM").is_ok() {
             }         
         }
 
+            // MARK: - Firebase Messaging Delegate
+        func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+            if let fcmToken = fcmToken {
+                trigger("new_fcm_token", data: ["token": fcmToken])
+            }
+        }
     "#;
 
         // Replace si premium activé
@@ -51,6 +57,14 @@ if std::env::var("CARGO_FEATURE_IOS_FCM").is_ok() {
             "ios/Sources/PushNotificationsPlugin.swift",
             "/* IMPORT PLACEHOLDER */",
             import_statement,
+        );
+
+        let interface = r#"MessagingDelegate"#;
+        
+        write_features_file(
+            "ios/Sources/PushNotificationsPlugin.swift",
+            "/* INTERFACE PLACEHOLDER */",
+            interface,
         );
 
         // Dépendances à ajouter dans Package.swift

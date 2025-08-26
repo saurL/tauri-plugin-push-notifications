@@ -13,7 +13,7 @@ class InitFirebaseRequest: Decodable {
 }
 
 // MARK: - Firebase Push Notifications Plugin
-class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, MessagingDelegate {
+class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, /* INTERFACE PLACEHOLDER */ {
 
     // Store reference to pending notification
     private var pendingNotification: [AnyHashable: Any]?
@@ -62,12 +62,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
         }
     }
 
-    // MARK: - Firebase Messaging Delegate
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        if let fcmToken = fcmToken {
-            trigger("new_fcm_token", data: ["token": fcmToken])
-        }
-    }
+
 
     // MARK: - UNUserNotificationCenterDelegate
 
