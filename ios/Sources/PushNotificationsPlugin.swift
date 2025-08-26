@@ -48,9 +48,9 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
         }
     }
 
-    @objc override public func setEventHandler(_ invoke: Invoke) {
-        val args = invoke.parseArgs(SetEventHandlerArgs::class.java)
-        this.channel = args.handler
+    @objc public func setEventHandler(_ invoke: Invoke) {
+        var args = invoke.parseArgs(SetEventHandlerArgs.self)
+        self.channel = args.handler
         invoke.resolve()
     }
 
