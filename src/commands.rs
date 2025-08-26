@@ -7,6 +7,9 @@ use crate::{PushTokenState, Result};
 
 #[command]
 pub(crate) async fn get_fcm_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
+    if cfg!(not(all(target_os = "ios", feature = "ios-fcm"))) {
+        return Err("Firebase is not enabled. Please enable the 'ios-fcm' feature to use FCM on iOS.".into());
+    }
     let state = app.state::<Mutex<PushTokenState>>();
 
     app.push_notifications()
@@ -14,6 +17,9 @@ pub(crate) async fn get_fcm_token<R: Runtime>(app: AppHandle<R>) -> Result<PushT
 }
 #[command]
 pub(crate) async fn get_apns_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
+    if cfg!(not(any(target_os = "ios", target_os = "android"))) {
+        return Err("APNs is not available , you are not using iOS or Macos.".into());
+    }
     let state = app.state::<Mutex<PushTokenState>>();
 
     app.push_notifications()
