@@ -48,13 +48,13 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
         }
     }
 
-    @objc public func setEventHandler(_ invoke: Invoke) {
-        var args = invoke.parseArgs(SetEventHandlerArgs.self)
+    @objc public func setEventHandler(_ invoke: Invoke) throws {
+        let args = invoke.parseArgs(SetEventHandlerArgs.self)
         self.channel = args.handler
         invoke.resolve()
     }
 
-    @objc override public func getOpeningNotificationData(_ invoke: Invoke) {
+    @objc public func getOpeningNotificationData(_ invoke: Invoke) {
         invoke.resolve(self.pendingNotification)
     }
 
