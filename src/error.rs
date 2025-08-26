@@ -45,13 +45,13 @@ impl From<String> for PluginInvokeError {
 
 impl From<&str> for Error {
     fn from(s: &str) -> Self {
-        Error::PluginInvoke(s.to_string())
+        Error::PluginInvoke(s.into())
     }
 }
 #[cfg(mobile)]
 
 impl From<String> for Error {
     fn from(s: String) -> Self {
-        Error::PluginInvoke(s)
+        Error::PluginInvoke(s.into())
     }
 }
