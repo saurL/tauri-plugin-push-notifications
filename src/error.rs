@@ -1,7 +1,8 @@
 use serde::{ser::Serializer, Serialize};
 
 pub type Result<T> = std::result::Result<T, Error>;
-
+#[cfg(mobile)]
+use tauri::plugin::mobile::PluginInvokeError;
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error(transparent)]
