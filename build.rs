@@ -4,8 +4,7 @@ const COMMANDS: &[&str] = &["get_fcm_token", "get_apns_token", "registerListener
 fn main() {
 
     // Vérifier si la feature est activée
-    #[cfg(feature = "ios-fcm")]
-    {
+if std::env::var("CARGO_FEATURE_IOS_FCM").is_ok() {
         // Fonction Swift à insérer
         let function = r#"// MARK: - Firebase initialization
         @objc public func initFirebase(_ invoke: Invoke) throws {
