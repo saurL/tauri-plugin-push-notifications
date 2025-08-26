@@ -7,9 +7,7 @@ import Tauri
 import UIKit
 import UserNotifications
 import WebKit
-import FirebaseCore
-import FirebaseMessaging
-
+/* IMPORT PLACEHOLDER */
 class InitFirebaseRequest: Decodable {
   let token: Data
 }
@@ -32,20 +30,8 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate, Messagi
     }
 
 
-s
-
-    // MARK: - Firebase initialization
-    @objc public func initFirebase(_ invoke: Invoke) throws {
-        let args = try invoke.parseArgs(InitFirebaseRequest.self)
-
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-        }
-        Messaging.messaging().delegate = self
-        Messaging.messaging().apnsToken = args.token
-        invoke.resolve()
-    }
-
+    /* FUNCTION PLACEHOLDER */
+    
     // MARK: - JS Method: Get FCM token
     @objc public func get_fcm_token(_ invoke: Invoke) throws {
         Messaging.messaging().token { token, error in
