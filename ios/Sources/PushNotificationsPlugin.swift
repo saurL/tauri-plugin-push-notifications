@@ -11,12 +11,16 @@ import WebKit
 class InitFirebaseRequest: Decodable {
   let token: Data
 }
+class SetEventHandlerArgs: Decodable {
+  let handler: Channel
+}
 
 // MARK: - Firebase Push Notifications Plugin
 class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTERFACE PLACEHOLDER */ {
 
     // Store reference to pending notification
-    private var pendingNotification: [AnyHashable: Any]?
+    private var pendingNotification: [String: Any]?
+    private var channel: Channel?
 
     override init() {
         super.init()
@@ -42,6 +46,16 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
             }
             invoke.resolve(["permissionState": granted ? "granted" : "denied"])
         }
+    }
+
+    @objc override public func setEventHandler(_ invoke: Invoke) {
+        val args = invoke.parseArgs(SetEventHandlerArgs::class.java)
+        this.channel = args.handler
+        invoke.resolve()
+    }
+
+    @objc override public func getOpeningNotificationData(_ invoke: Invoke) {
+        invoke.resolve(self.pendingNotification)
     }
 
     // MARK: - Check current permission status
@@ -70,6 +84,18 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+           let userInfo = notification.request.content.userInfo
+    
+            // Transformer [AnyHashable: Any] en [String: Any]
+            var dict: [String: Any] = [:]
+            for (key, value) in userInfo {
+                if let keyStr = key as? String {
+                    dict[keyStr] = value
+                }
+            }
+            
+            channel?.send(dict)
+    
         completionHandler([]) 
     }
 
@@ -77,7 +103,18 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        pendingNotification = response.notification.request.content.userInfo
+          let userInfo = response.notification.request.content.userInfo
+    
+        // Transformer [AnyHashable: Any] en [String: Any]
+        var dict: [String: Any] = [:]
+        for (key, value) in userInfo {
+            if let keyStr = key as? String {
+                dict[keyStr] = value
+            }
+        }
+        
+        pendingNotification = dict
+        channel?.send(dict)
         completionHandler() 
     }
 
