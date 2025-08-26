@@ -51,9 +51,7 @@ impl<R: Runtime, T: Manager<R>> PushNotificationsExt<R> for T {
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("push-notifications")
         .invoke_handler(tauri::generate_handler![
-            #[cfg(any(target_os = "macos", target_os = "ios"))]
             commands::get_apns_token,
-            #[cfg(mobile)]
             commands::get_fcm_token
         ])
         .setup(|app, api| {

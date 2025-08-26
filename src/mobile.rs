@@ -55,16 +55,21 @@ impl<R: Runtime> PushNotifications<R> {
         state: State<Mutex<PushTokenState>>,
         _payload: PushTokenRequest,
     ) -> crate::Result<PushTokenResponse> {
+        if cfg!(not(all(target_os = "ios", feature = "ios-fcm"))) {
+            return Err("Firebase is not enabled. Please enable the 'ios-fcm' feature to use FCM on iOS.".into());
+        }
         self.0
             .run_mobile_plugin("get_fcm_token", _payload)
             .map_err(Into::into)
     }
-    #[cfg(any(target_os = "ios"))]
     pub fn get_apns_token(
         &self,
         state: State<Mutex<PushTokenState>>,
         _payload: PushTokenRequest,
     ) -> crate::Result<PushTokenResponse> {
+        if cfg!(not(any(target_os = "ios", target_os = "android"))) {
+            return Err("APNs is not available , you are not using iOS or Macos.".into());
+        }
         let state = state.lock().unwrap();
 
         match &state.token {
