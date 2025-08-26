@@ -140,7 +140,12 @@ Should be used at app startup to check if the app was opened by clicking a notif
 
 All handlers require a structure that implements the `NotificationDataTrait`.
 Currently, this trait is a placeholder for Serialize, Deserialize, and Clone.
-### Example
+This structure represents the additional data you send along with your notification.
+>⚠️ On Android, the on_notification_clicked event may sometimes be triggered even if the notification was not actually clicked.
+>In such cases, the data might not match your defined structure, and a deserialization error will be logged.
+>This should not impact the rest of the app’s functionality.
+
+Example:
 ```rust
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Notification {
@@ -151,7 +156,26 @@ impl NotificationDataTrait for Notification {}
 
 app_handle.push_notifications()
     .on_notification_clicked(move |data: Notification| {
-        handle_notification(&app_handle_navigation, data);
+         // handle notification here 
+    });
+```
+
+
+If you expect to receive different data structures through your notifications, you can define optional fields in your struct for the data that is not always present.
+
+Example:
+```rust
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct Notification {
+    pub route: String,
+    pub extra_info: Option<String>, // optional field
+}
+
+impl NotificationDataTrait for Notification {}
+
+app_handle.push_notifications()
+    .on_notification_clicked(move |data: Notification| {
+        // handle notification here 
     });
 ```
 ## 🛠️ JavaScript API
