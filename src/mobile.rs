@@ -202,7 +202,7 @@ impl<R: Runtime> PushNotifications<R> {
         
     }
 
-}
+
 
  fn register_message_channel<T: NotificationDataTrait>(
         &self,
