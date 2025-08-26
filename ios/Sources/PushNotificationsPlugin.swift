@@ -49,13 +49,13 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
     }
 
     @objc public func setEventHandler(_ invoke: Invoke) throws {
-        let args = invoke.parseArgs(SetEventHandlerArgs.self)
+        let args = try invoke.parseArgs(SetEventHandlerArgs.self)
         self.channel = args.handler
         invoke.resolve()
     }
 
     @objc public func getOpeningNotificationData(_ invoke: Invoke) {
-        invoke.resolve(self.pendingNotification)
+        invoke.resolve(self.pendingNotification?)
     }
 
     // MARK: - Check current permission status
