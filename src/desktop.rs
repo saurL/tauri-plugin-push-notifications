@@ -14,7 +14,7 @@ pub fn init<R: Runtime, C: DeserializeOwned>(
     Ok(PushNotifications(app.clone()))
 }
 
-/// Access to the push-notifications APIs.
+/// Access to the fcm APIs.
 pub struct PushNotifications<R: Runtime>(AppHandle<R>);
 
 impl<R: Runtime> PushNotifications<R> {

@@ -1,6 +1,6 @@
 <script>
   import Greet from './lib/Greet.svelte'
-  import { ping } from 'tauri-plugin-push-notifications-api'
+  import { ping } from 'tauri-plugin-fcm-api'
 
 	let response = ''
 

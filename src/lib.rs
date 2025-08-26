@@ -73,7 +73,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                     let state = app.state::<Mutex<PushTokenState>>();
                     let mut state = state.lock().unwrap();
                     let owned = token.to_owned();
-                    #[cfg(target_os = "ios")]
+                    #[cfg(all(target_os = "ios", feature = "ios-fcm"))]
                     {
                         let string_token = general_purpose::STANDARD.encode(&owned);
 

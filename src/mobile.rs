@@ -78,7 +78,7 @@ impl<R: Runtime> PushNotifications<R> {
         }
     }
 
-    #[cfg(any(target_os = "ios"))]
+    #[cfg(all(target_os = "ios", feature = "ios-fcm"))]
     pub fn init_firebase(&self, request: InitFirebaseRequest) -> crate::Result<()> {
             self.0
                 .run_mobile_plugin::<()>("initFirebase", request)

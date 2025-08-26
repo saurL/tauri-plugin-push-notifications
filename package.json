@@ -1,5 +1,5 @@
 {
-  "name": "tauri-plugin-push-notifications",
+  "name": "tauri-plugin-fcm",
   "version": "0.1.0",
   "author": "Sam Gammon <sam@elide.dev>",
   "description": "Tauri plugin for push notifications (APNS, FCM, etc)",
