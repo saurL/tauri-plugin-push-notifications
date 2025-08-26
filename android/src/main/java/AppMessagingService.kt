@@ -7,7 +7,7 @@ package app.tauri.pushNotifications
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.util.concurrent.atomic.AtomicReference
-
+import app.tauri.plugin.JSObject
 // Holds the singleton instance of the messaging service.
 private val messagingServiceSingleton = AtomicReference<AppMessagingService>(null)
 
@@ -42,7 +42,7 @@ class AppMessagingService : FirebaseMessagingService() {
             for ((key, value) in remoteMessage.data) {
                 event.put(key, value)
             }
-            PushNotificationsBridge.sendEvent(event)
+            PushNotificationsPlugin.sendMessageEvent(event)
         }
 
     override fun onNewToken(token: String) {

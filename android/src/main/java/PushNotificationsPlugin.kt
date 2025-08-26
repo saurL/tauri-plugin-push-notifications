@@ -111,7 +111,9 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
         }
 
         fun newTokenEvent(token: String) {
-            trigger("new_fcm_token", data: ["token": token])
+            val data = JSObject()
+            data.put("token", token)
+            instance?.trigger("new_fcm_token", data)
         }
     }
 }
