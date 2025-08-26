@@ -5,6 +5,8 @@ fn main() {
 
     // Vérifier si la feature est activée
 if std::env::var("CARGO_FEATURE_IOS_FCM").is_ok() {
+        println!("cargo:warning=Feature ios-fcm activée !");
+
         // Fonction Swift à insérer
         let function = r#"// MARK: - Firebase initialization
         @objc public func initFirebase(_ invoke: Invoke) throws {
@@ -72,6 +74,9 @@ if std::env::var("CARGO_FEATURE_IOS_FCM").is_ok() {
             "/* PRODUCT PLACEHOLDER */",
             product,
         );
+    }
+    else {
+        println!("cargo:warning=Feature ios-fcm désactivée !");
     }
 
     tauri_plugin::Builder::new(COMMANDS)
