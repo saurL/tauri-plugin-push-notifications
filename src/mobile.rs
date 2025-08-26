@@ -11,7 +11,6 @@ use crate::PushTokenState;
 use tauri::Listener;
 use serde::{Serialize, Deserialize};
 use tauri::plugin::PermissionState;
-
 #[cfg(target_os = "ios")]
 tauri::ios_plugin_binding!(init_plugin_push_notifications);
 
@@ -55,9 +54,7 @@ impl<R: Runtime> PushNotifications<R> {
         state: State<Mutex<PushTokenState>>,
         _payload: PushTokenRequest,
     ) -> crate::Result<PushTokenResponse> {
-        if cfg!(not(all(target_os = "ios", feature = "ios-fcm"))) {
-            return Err("Firebase is not enabled. Please enable the 'ios-fcm' feature to use FCM on iOS.".into());
-        }
+
         self.0
             .run_mobile_plugin("get_fcm_token", _payload)
             .map_err(Into::into)
@@ -67,9 +64,7 @@ impl<R: Runtime> PushNotifications<R> {
         state: State<Mutex<PushTokenState>>,
         _payload: PushTokenRequest,
     ) -> crate::Result<PushTokenResponse> {
-        if cfg!(not(any(target_os = "ios", target_os = "android"))) {
-            return Err("APNs is not available , you are not using iOS or Macos.".into());
-        }
+
         let state = state.lock().unwrap();
 
         match &state.token {
@@ -105,8 +100,6 @@ impl<R: Runtime> PushNotifications<R> {
             .run_mobile_plugin::<PermissionResponse>("checkPermissions", ())
             .map_err(Into::into)
     }
-        #[cfg(target_os = "android")]
-
     pub fn on_notification_clicked<
         F: Fn(T) + Send + 'static,
         T: NotificationDataTrait,
@@ -125,21 +118,7 @@ impl<R: Runtime> PushNotifications<R> {
                 }
             });
         Ok(())
-    }
-        #[cfg(target_os = "ios")]
-
-        pub fn on_notification_clicked<
-        F: Fn(T) + Send + 'static,
-        T: NotificationDataTrait,
-    >(
-        &self,
-        f: F,
-    ) -> crate::Result<()> {
-       Ok(())
-    }
-
-    
-
+    }  
     
     pub fn get_opening_notification_data<T: NotificationDataTrait>(
         &self,
@@ -158,9 +137,6 @@ impl<R: Runtime> PushNotifications<R> {
         }
     }
 
-
-
-    #[cfg(target_os = "android")]
     fn register_event_handler<T: NotificationDataTrait>(
         &self,
     ) -> crate::Result<()> {
