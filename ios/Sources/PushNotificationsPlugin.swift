@@ -55,7 +55,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
     }
 
     @objc public func getOpeningNotificationData(_ invoke: Invoke) {
-        invoke.resolve(self.pendingNotification?)
+        invoke.resolve(self.pendingNotification ?? [:])
     }
 
     // MARK: - Check current permission status
