@@ -7,8 +7,11 @@ use crate::{PushTokenState, Result};
 
 #[command]
 pub(crate) async fn get_fcm_token<R: Runtime>(app: AppHandle<R>) -> Result<PushTokenResponse> {
-    if cfg!(not(all(target_os = "ios", feature = "ios-fcm"))) {
-        return Err("Firebase is not enabled. Please enable the 'ios-fcm' feature to use FCM on iOS.".into());
+    if cfg!(all(target_os = "ios", not(feature = "ios-fcm"))) {
+        return Err(
+            "Firebase is not enabled. Please enable the 'ios-fcm' feature to use FCM on iOS."
+                .into(),
+        );
     }
     let state = app.state::<Mutex<PushTokenState>>();
 
