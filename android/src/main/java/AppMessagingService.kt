@@ -15,12 +15,6 @@ class AppMessagingService : FirebaseMessagingService() {
     // Most recent push token.
     private val messagingToken = AtomicReference<String>(null)
 
-    // Dispatched when a remote notification is received.
-    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        //
-    }
-
-
     override fun onCreate() {
         check(messagingServiceSingleton.get() == null) { "AppMessagingService already active" }
         messagingServiceSingleton.set(this)
@@ -42,4 +36,18 @@ class AppMessagingService : FirebaseMessagingService() {
             }
         }
     }
+
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+            val event = JSObject()
+            for ((key, value) in remoteMessage.data) {
+                event.put(key, value)
+            }
+            PushNotificationsBridge.sendEvent(event)
+        }
+
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        PushNotificationsPlugin.newTokenEvent(token)
+    }
 }
+

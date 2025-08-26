@@ -119,6 +119,26 @@ impl<R: Runtime> PushNotifications<R> {
             });
         Ok(())
     }  
+
+    pub fn on_message_received<
+        F: Fn(T) + Send + 'static,
+        T: NotificationDataTrait,
+    >(
+        &self,
+        f: F,
+    ) -> crate::Result<()> {
+
+        self.register_message_channel::<T>()?;
+        let _ = self
+            .0
+            .app()
+            .listen("push-notification://notification-message", move |event| {
+                if let Ok(data) = serde_json::from_str(event.payload()) {
+                    f(data)
+                }
+            });
+        Ok(())
+    }  
     
     pub fn get_opening_notification_data<T: NotificationDataTrait>(
         &self,
@@ -136,6 +156,99 @@ impl<R: Runtime> PushNotifications<R> {
                 .map_err(Into::into)
         }
     }
+
+     fn register_event_handler<T: NotificationDataTrait>(
+        &self,
+    ) -> crate::Result<()> {
+        
+            use tauri::ipc::{Channel, InvokeResponseBody};
+            use tauri::Emitter;
+            #[derive(Serialize)]
+            #[serde(rename_all = "camelCase")]
+            pub struct EventHandler {
+                pub handler: Channel,
+            }
+            
+            let app_handle = self.0.app().clone();
+           self.0.run_mobile_plugin::<()>(
+                "setEventHandler",
+                EventHandler {
+                    handler: Channel::new(move |event| {
+                        let data: Option<T> = match event {
+                            InvokeResponseBody::Json(payload) => {
+                                match serde_json::from_str::<T>(&payload) {
+                                    Ok(parsed) => Some(parsed),
+                                    Err(e) => {
+                                        error!(
+                                            "Notification deserialization error: the target class is missing required fields or has incompatible structure.\nError: {}\nPayload: {}",
+                                            e,
+                                            payload
+                                        );
+                                        None
+                                    }
+                                }
+                            }
+                            _ => None,
+                        };
+                        if let Some(data) = data {
+                            let _ = app_handle.emit("push-notification://notification-clicked", data);
+                        } 
+
+                        Ok(())
+                    }),
+                },
+            )?;
+            Ok(())
+        
+    }
+
+}
+
+ fn register_message_channel<T: NotificationDataTrait>(
+        &self,
+    ) -> crate::Result<()> {
+        
+            use tauri::ipc::{Channel, InvokeResponseBody};
+            use tauri::Emitter;
+            #[derive(Serialize)]
+            #[serde(rename_all = "camelCase")]
+            pub struct EventHandler {
+                pub handler: Channel,
+            }
+            
+            let app_handle = self.0.app().clone();
+           self.0.run_mobile_plugin::<()>(
+                "setMessageChannel",
+                EventHandler {
+                    handler: Channel::new(move |event| {
+                        let data: Option<T> = match event {
+                            InvokeResponseBody::Json(payload) => {
+                                match serde_json::from_str::<T>(&payload) {
+                                    Ok(parsed) => Some(parsed),
+                                    Err(e) => {
+                                        error!(
+                                            "Notification deserialization error: the target class is missing required fields or has incompatible structure.\nError: {}\nPayload: {}",
+                                            e,
+                                            payload
+                                        );
+                                        None
+                                    }
+                                }
+                            }
+                            _ => None,
+                        };
+                        if let Some(data) = data {
+                            let _ = app_handle.emit("push-notification://notification-message", data);
+                        } 
+
+                        Ok(())
+                    }),
+                },
+            )?;
+            Ok(())
+        
+    }
+
 
     fn register_event_handler<T: NotificationDataTrait>(
         &self,

@@ -21,6 +21,7 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
     // Store reference to pending notification
     private var pendingNotification: [String: Any]?
     private var channel: Channel?
+    private var messageChannel: Channel?
 
     override init() {
         super.init()
@@ -54,6 +55,12 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
         invoke.resolve()
     }
 
+    @objc public func setMessageChannel(_ invoke: Invoke) throws {
+        let args = try invoke.parseArgs(SetEventHandlerArgs.self)
+        self.messageChannel = args.handler
+        invoke.resolve()
+    }
+
     @objc public func getOpeningNotificationData(_ invoke: Invoke) {
         invoke.resolve(self.pendingNotification ?? [:])
     }
@@ -84,18 +91,18 @@ class PushNotificationsPlugin: Plugin, UNUserNotificationCenterDelegate /* INTER
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-           let userInfo = notification.request.content.userInfo
+        let userInfo = notification.request.content.userInfo
     
-            // Transformer [AnyHashable: Any] en [String: Any]
-            var dict: [String: Any] = [:]
-            for (key, value) in userInfo {
-                if let keyStr = key as? String {
-                    dict[keyStr] = value
-                }
+        // Transformer [AnyHashable: Any] en [String: Any]
+        var dict: [String: Any] = [:]
+        for (key, value) in userInfo {
+            if let keyStr = key as? String {
+                dict[keyStr] = value
             }
-            
-            channel?.send(dict)
-    
+        }
+
+        messageChannel?.send(dict)
+
         completionHandler([]) 
     }
 

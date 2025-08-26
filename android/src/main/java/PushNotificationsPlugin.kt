@@ -38,9 +38,11 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
     // Whether permissions have been granted for messaging.
     private val messagingPermissionGranted = AtomicBoolean(false)
     private var channel: Channel? = null
+    private var messageChannel: Channel? = null
     private var openningNotificationData: JSObject? = null
     override fun load(webView: WebView) {
         super.load(webView)
+        instance = this  
         val activity = this.activity
         val intent = activity.intent
         val bundle = intent.extras
@@ -63,7 +65,6 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
             val value = bundle.getString(key)
             event.put(key, value)
         }
-        println("Received notification data: $event")
         this.channel?.send(event)
     }
 
@@ -91,5 +92,26 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
     @Command
     fun getOpeningNotificationData(invoke: Invoke) {
         invoke.resolve(this.openningNotificationData)
+    }
+
+        @Command
+    fun setMessageChannel(invoke: Invoke) {
+        val args = invoke.parseArgs(SetEventHandlerArgs::class.java)
+        this.messageChannel = args.handler
+        invoke.resolve()
+    }
+
+    companion object {
+
+        var instance: PushNotificationsPlugin? = null
+
+
+        fun sendMessageEvent(event: JSObject) {
+            instance?.messageChannel?.send(event)
+        }
+
+        fun newTokenEvent(token: String) {
+            trigger("new_fcm_token", data: ["token": token])
+        }
     }
 }
