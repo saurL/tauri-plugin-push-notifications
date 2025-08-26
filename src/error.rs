@@ -40,3 +40,17 @@ impl From<String> for PluginInvokeError {
         })
     }
 }
+#[cfg(mobile)]
+
+impl From<&str> for Error {
+    fn from(s: &str) -> Self {
+        Error::PluginInvoke(s.to_string())
+    }
+}
+#[cfg(mobile)]
+
+impl From<String> for Error {
+    fn from(s: String) -> Self {
+        Error::PluginInvoke(s)
+    }
+}
