@@ -15,6 +15,16 @@ pub fn run() {
         .expect("error while running tauri application");
 }
 ```
+
+Currently in order to use it you need to add this to yourn cargo
+```toml
+[dependencies]
+tauri = { git ="https://github.com/saurL/tauri",branch="feat/push-notifications", features = [] }
+[patch.crates-io]
+tauri = { git = "https://github.com/saurL/tauri", branch = "feat/push-notifications" }
+tauri-utils = { git = "https://github.com/saurL/tauri", branch = "feat/push-notifications" }
+
+```
 ## ⚙️ Configuration
 ### iOS
 #### Using APNs only
