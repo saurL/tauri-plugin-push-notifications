@@ -1,4 +1,4 @@
-use base64::{engine::general_purpose, Engine as _};
+use base64;
 use serde::de::DeserializeOwned;
 use std::sync::Mutex;
 use tauri::{
@@ -69,7 +69,7 @@ impl<R: Runtime> PushNotifications<R> {
 
         match &state.token {
             Some(token) => {
-                let encoded = general_purpose::STANDARD.encode(&token);
+                let encoded = base64::encode(&token);
                 Ok(PushTokenResponse {
                     value: Some(encoded.clone()),
                 })
