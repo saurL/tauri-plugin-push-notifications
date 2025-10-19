@@ -38,11 +38,15 @@ class AppMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-            val event = JSObject()
-            for ((key, value) in remoteMessage.data) {
-                event.put(key, value)
-            }
-            PushNotificationsPlugin.sendMessageEvent(event)
+val event = JSObject()
+    for ((key, value) in remoteMessage.data) {
+        val safeValue = when (value) {
+            is String -> value
+            else -> value.toString() // convertit LazyValue, Bundle, etc.
+        }
+        event.put(key, safeValue)
+    }
+    PushNotificationsPlugin.sendMessageEvent(event)
         }
 
     override fun onNewToken(token: String) {

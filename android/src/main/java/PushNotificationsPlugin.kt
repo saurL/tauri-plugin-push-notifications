@@ -62,8 +62,20 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
         val event = JSObject()
 
         bundle?.keySet()?.forEach { key ->
-            val value = bundle.getString(key)
-            event.put(key, value)
+        val rawValue = bundle.get(key) // récupère sans cast
+        val safeValue = try {
+            when (rawValue) {
+                null -> "null"
+                is String -> rawValue
+                is ByteArray -> rawValue.decodeToString() // utile si c’est un token ou ID binaire
+                else -> rawValue.toString()
+            }
+        } catch (e: Exception) {
+            Log.w("PushNotificationsPlugin", "Impossible de lire la clé $key : ${e.message}")
+            "unreadable"
+        }
+        event.put(key, safeValue)
+
         }
         this.channel?.send(event)
     }
