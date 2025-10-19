@@ -75,9 +75,6 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
             Log.w("PushNotificationsPlugin", "Error processing key $key: ${e.message}")
         }
     }
-
-
-        }
         this.channel?.send(event)
     }
 
