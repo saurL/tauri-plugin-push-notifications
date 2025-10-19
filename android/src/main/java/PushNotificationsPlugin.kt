@@ -22,6 +22,7 @@ import app.tauri.plugin.JSObject
 import app.tauri.plugin.Channel
 import android.content.Intent
 import java.util.concurrent.atomic.AtomicBoolean
+import android.util.Log
 
 @InvokeArg
 class SetEventHandlerArgs {
@@ -62,19 +63,19 @@ class PushNotificationsPlugin(private val activity: Activity) : Plugin(activity)
         val event = JSObject()
 
         bundle?.keySet()?.forEach { key ->
-        val rawValue = bundle.get(key) // récupère sans cast
-        val safeValue = try {
+        try {
+            val rawValue = bundle.get(key)
             when (rawValue) {
-                null -> "null"
-                is String -> rawValue
-                is ByteArray -> rawValue.decodeToString() // utile si c’est un token ou ID binaire
-                else -> rawValue.toString()
+                is String -> event.put(key, rawValue)
+                is ByteArray -> event.put(key, rawValue.decodeToString())
+                is Number, is Boolean -> event.put(key, rawValue.toString())
+                // sinon on ignore les autres types (Parcelable, LazyValue, etc.)
             }
         } catch (e: Exception) {
-            Log.w("PushNotificationsPlugin", "Impossible de lire la clé $key : ${e.message}")
-            "unreadable"
+            Log.w("PushNotificationsPlugin", "Error processing key $key: ${e.message}")
         }
-        event.put(key, safeValue)
+    }
+
 
         }
         this.channel?.send(event)
